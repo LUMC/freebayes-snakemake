@@ -20,7 +20,7 @@ rule all:
         outfile=get_outfile(),
         samples=expand("{sample}.txt", sample=pep.sample_table["sample_name"]),
         trimmed=[f"{sample}/{rg}_R1.fastq.gz" for sample, rg in rg_per_sample()],
-        bams=[f"{sample}_{rg}.bam" for sample, rg in rg_per_sample()],
+        bams=[f"{sample}/{rg}.sorted.bam" for sample, rg in rg_per_sample()],
         settings="settings.txt",
 
 
@@ -50,6 +50,32 @@ rule cutadapt:
         """
 
 
+rule align:
+    input:
+        fin=rules.cutadapt.output.fout,
+        rin=rules.cutadapt.output.rout,
+        reference=config["reference"],
+    output:
+        bam="{sample}/{readgroup}.sorted.bam",
+        bai="{sample}/{readgroup}.sorted.bam.bai",
+    params:
+        compression_level=1,
+    log:
+        bwa="log/{sample}_{readgroup}.align.bwa.log",
+        sam="log/{sample}_{readgroup}.align.samtools.log",
+    container:
+        containers["bwa-mem2"]
+    shell:
+        """
+        bwa-mem2 mem \
+            {input.reference} \
+            {input.fin} {input.rin} 2> {log.bwa} |
+            samtools sort -l {params.compression_level} \
+            - -o {output.bam} 2> {log.sam};
+            samtools index {output}
+        """
+
+
 rule example:
     output:
         get_outfile(),
@@ -73,22 +99,6 @@ rule sample:
     shell:
         """
         touch {output} 2> {log}
-        """
-
-
-rule map:
-    input:
-        f=get_forward,
-        r=get_reverse,
-    output:
-        "{sample}_{readgroup}.bam",
-    log:
-        "log/{sample}_{readgroup}map.txt",
-    container:
-        containers["debian"]
-    shell:
-        """
-        echo mem ref.fa {input.f} {input.r} > {output}
         """
 
 

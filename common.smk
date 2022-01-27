@@ -1,4 +1,6 @@
 containers = {
+    # bwa-mem2 2.1, samtools 1.11
+    "bwa-mem2": "docker://quay.io/biocontainers/mulled-v2-e5d375990341c5aef3c9aff74f96f66f65375ef6:e6f0d20c9d78572ddbbf00d8767ee6ff865edd4e-0",
     "cutadapt": "docker://quay.io/biocontainers/cutadapt:3.5--py36hc5360cc_0",
     "debian": "docker://debian:latest",
 }

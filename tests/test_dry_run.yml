@@ -14,11 +14,12 @@
       - echo "Hello world!" > outputfile.txt
       - sample1.txt
       - sample2.txt
-      - "echo mem ref.fa tests/data/fastq/micro_rg1_R1.fq.gz tests/data/fastq/micro_rg1_R2.fq.gz"
       # Test if the default settings from common.smk are used when no other
       # configuration options are specified
       - echo common.smk common.smk common.smk
       - cutadapt
+      - sample1/rg1.sorted.bam
+      - sample1/rg1.sorted.bam.bai
     must_not_contain:
       - rror
   stderr:

@@ -19,9 +19,10 @@
         - Hello world!
     - path: sample1.txt
     - path: sample2.txt
-    - path: sample1_rg1.bam
     - path: sample1/rg1_R1.fastq.gz
     - path: sample1/rg1_R2.fastq.gz
+    - path: sample1/rg1.sorted.bam
+    - path: sample1/rg1.sorted.bam.bai
 
 - name: integration-subsamples
   tags:
@@ -39,13 +40,14 @@
     must_not_contain:
       - rror
   files:
-    - path: outputfile.txt
-      contains:
-        - Hello world!
-    - path: sample1.txt
-    - path: sample2.txt
-    - path: sample1_rg1.bam
     - path: sample1/rg1_R1.fastq.gz
     - path: sample1/rg1_R2.fastq.gz
     - path: sample1/rg2_R1.fastq.gz
     - path: sample1/rg2_R2.fastq.gz
+    # Test for two readgroups for sample1
+    - path: sample1/rg1.sorted.bam
+    - path: sample1/rg2.sorted.bam
+    # Test for a single readgroup for sample2
+    - path: sample2/rg1.sorted.bam
+    - path: sample2/rg2.sorted.bam
+      should_exist: false
