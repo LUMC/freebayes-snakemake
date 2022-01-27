@@ -19,8 +19,8 @@ jobs:
       matrix:
         test:
           - sanity-snakemake
-          - sanity-snakemake-lint
           - sanity-singularity
+          - sanity-snakemake-lint
           - sanity-snakefmt
           - dry-run-vanilla
           - dry-run-subsamples
@@ -28,6 +28,7 @@ jobs:
           - dry-run-settings-configfile
           - dry-run-settings-pepfile
           - integration-vanilla
+          - integration-subsamples
     steps:
     - uses: actions/checkout@v2
 

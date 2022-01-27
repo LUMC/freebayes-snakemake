@@ -115,7 +115,6 @@ rule call_variants:
             --fasta-reference {input.reference} \
             --bam {input.bam} > {output.vcf} 2> {log}
         """
-            
 
 
 rule example:
