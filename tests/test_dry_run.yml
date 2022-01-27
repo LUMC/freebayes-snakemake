@@ -41,9 +41,15 @@
       - echo "Hello world!" > outputfile.txt
       - sample1.txt
       - sample2.txt
-    contains_regex:
-      # Test if specifying multiple bam files using subsamples is handled
-      - 'echo mem .*micro_rg1_R1.fq.gz .*micro_rg2_R1.fq.gz .*micro_rg1_R2.fq.gz .*micro_rg2_R2.fq.gz'
+      # Test for two trimmed readgroups for sample1
+      - sample1/rg1_R1.fastq.gz
+      - sample1/rg1_R2.fastq.gz
+      - sample1/rg2_R1.fastq.gz
+      - sample1/rg2_R2.fastq.gz
+      # Test for a single trimmed readgroup for sample2
+      - sample2/rg1_R1.fastq.gz
+      - sample2/rg1_R2.fastq.gz
+      - sample
     must_not_contain:
       - rror
   stderr:

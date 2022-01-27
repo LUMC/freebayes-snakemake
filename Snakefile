@@ -19,8 +19,8 @@ rule all:
     input:
         outfile=get_outfile(),
         samples=expand("{sample}.txt", sample=pep.sample_table["sample_name"]),
-        trimmed=expand("{sample}/trimmed_R1.fastq.gz", sample=pep.sample_table["sample_name"]),
-        bams=expand("{sample}.bam", sample=pep.sample_table["sample_name"]),
+        trimmed=[f"{sample}/{rg}_R1.fastq.gz" for sample, rg in rg_per_sample()],
+        bams=[f"{sample}_{rg}.bam" for sample, rg in rg_per_sample()],
         settings="settings.txt",
 
 
@@ -29,14 +29,13 @@ rule cutadapt:
         fin=get_forward,
         rin=get_reverse,
     output:
-        fout="{sample}/trimmed_R1.fastq.gz",
-        rout="{sample}/trimmed_R2.fastq.gz",
+        fout="{sample}/{readgroup}_R1.fastq.gz",
+        rout="{sample}/{readgroup}_R2.fastq.gz",
     log:
-        "log/{sample}_cutadapt.txt",
+        "log/{sample}_{readgroup}_cutadapt.txt",
     container:
         containers["cutadapt"]
-    threads:
-        4
+    threads: 4
     shell:
         """
         cutadapt \
@@ -82,9 +81,9 @@ rule map:
         f=get_forward,
         r=get_reverse,
     output:
-        "{sample}.bam",
+        "{sample}_{readgroup}.bam",
     log:
-        "log/{sample}_map.txt",
+        "log/{sample}_{readgroup}map.txt",
     container:
         containers["debian"]
     shell:

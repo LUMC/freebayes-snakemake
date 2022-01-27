@@ -19,6 +19,33 @@
         - Hello world!
     - path: sample1.txt
     - path: sample2.txt
-    - path: sample1.bam
-    - path: sample1/trimmed_R1.fastq.gz
-    - path: sample1/trimmed_R2.fastq.gz
+    - path: sample1_rg1.bam
+    - path: sample1/rg1_R1.fastq.gz
+    - path: sample1/rg1_R2.fastq.gz
+
+- name: integration-subsamples
+  tags:
+    - integration
+  command: >
+    snakemake
+      --reason
+      --printshellcmds
+      --jobs 1
+      --latency-wait 120
+      --use-singularity --singularity-args ' --cleanenv --bind /tmp'
+      --config pepfile=tests/pep/project_subsamples.yaml
+      --snakefile Snakefile
+  stderr:
+    must_not_contain:
+      - rror
+  files:
+    - path: outputfile.txt
+      contains:
+        - Hello world!
+    - path: sample1.txt
+    - path: sample2.txt
+    - path: sample1_rg1.bam
+    - path: sample1/rg1_R1.fastq.gz
+    - path: sample1/rg1_R2.fastq.gz
+    - path: sample1/rg2_R1.fastq.gz
+    - path: sample1/rg2_R2.fastq.gz
