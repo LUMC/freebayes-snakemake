@@ -3,6 +3,7 @@ containers = {
     "bwa-mem2": "docker://quay.io/biocontainers/mulled-v2-e5d375990341c5aef3c9aff74f96f66f65375ef6:e6f0d20c9d78572ddbbf00d8767ee6ff865edd4e-0",
     "cutadapt": "docker://quay.io/biocontainers/cutadapt:3.5--py36hc5360cc_0",
     "debian": "docker://debian:latest",
+    "freebayes": "docker://quay.io/biocontainers/freebayes:1.3.5--py36h74fc37f_4",
     "sambamba": "docker://quay.io/biocontainers/sambamba:0.8.1--hadffe2f_1",
 }
 default = {"setting1": "common.smk", "setting2": "common.smk", "setting3": "common.smk"}

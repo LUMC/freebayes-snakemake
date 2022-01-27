@@ -21,6 +21,7 @@ rule all:
         samples=expand("{sample}.txt", sample=pep.sample_table["sample_name"]),
         trimmed=[f"{sample}/{rg}_R1.fastq.gz" for sample, rg in rg_per_sample()],
         bams=expand("{sample}/{sample}.bam", sample=pep.sample_table["sample_name"]),
+        vcf=expand("{sample}/{sample}.vcf", sample=pep.sample_table["sample_name"]),
         settings="settings.txt",
 
 
@@ -96,6 +97,25 @@ rule markdup:
             --compression-level={params.compression_level} \
             {input.bam} {output.bam} 2> {log}
         """
+
+
+rule call_variants:
+    input:
+        bam=rules.markdup.output.bam,
+        reference=config["reference"],
+    output:
+        vcf="{sample}/{sample}.vcf",
+    log:
+        "log/{sample}_call_variants.txt",
+    container:
+        containers["freebayes"]
+    shell:
+        """
+        freebayes \
+            --fasta-reference {input.reference} \
+            --bam {input.bam} > {output.vcf} 2> {log}
+        """
+            
 
 
 rule example:

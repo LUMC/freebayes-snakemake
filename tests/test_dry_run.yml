@@ -20,6 +20,7 @@
       - cutadapt
       - sample1/sample1.bam
       - sample1/sample1.bam.bai
+      - sample1/sample1.vcf
     must_not_contain:
       - rror
   stderr:
@@ -52,6 +53,7 @@
       - sample2/rg1_R2.fastq.gz
       # Test for the bamfile for sample2
       - sample2/sample2.bam
+      - sample2/sample2.vcf
     contains_regex:
       # Test if two bam files are passed to sample1
       - 'sambamba markdup .* sample1/rg1.sorted.bam sample1/rg2.sorted.bam'
