@@ -20,3 +20,5 @@
     - path: sample1.txt
     - path: sample2.txt
     - path: sample1.bam
+    - path: sample1/trimmed_R1.fastq.gz
+    - path: sample1/trimmed_R2.fastq.gz

@@ -19,8 +19,36 @@ rule all:
     input:
         outfile=get_outfile(),
         samples=expand("{sample}.txt", sample=pep.sample_table["sample_name"]),
+        trimmed=expand("{sample}/trimmed_R1.fastq.gz", sample=pep.sample_table["sample_name"]),
         bams=expand("{sample}.bam", sample=pep.sample_table["sample_name"]),
         settings="settings.txt",
+
+
+rule cutadapt:
+    input:
+        fin=get_forward,
+        rin=get_reverse,
+    output:
+        fout="{sample}/trimmed_R1.fastq.gz",
+        rout="{sample}/trimmed_R2.fastq.gz",
+    log:
+        "log/{sample}_cutadapt.txt",
+    container:
+        containers["cutadapt"]
+    threads:
+        4
+    shell:
+        """
+        cutadapt \
+            -a AGATCGGAAGAG \
+            -A AGATCGGAAGAG \
+            --compression-level=1 \
+            --cores {threads} \
+            --output {output.fout} \
+            --paired-output {output.rout} \
+            {input.fin} {input.rin} \
+            > {log}
+        """
 
 
 rule example:

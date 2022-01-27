@@ -1,5 +1,5 @@
 containers = {
-    "cutadapt": "docker://quay.io/biocontainers/cutadapt:3.5--py36hc5360cc_0 ",
+    "cutadapt": "docker://quay.io/biocontainers/cutadapt:3.5--py36hc5360cc_0",
     "debian": "docker://debian:latest",
 }
 default = {"setting1": "common.smk", "setting2": "common.smk", "setting3": "common.smk"}

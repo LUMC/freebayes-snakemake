@@ -18,6 +18,7 @@
       # Test if the default settings from common.smk are used when no other
       # configuration options are specified
       - echo common.smk common.smk common.smk
+      - cutadapt
     must_not_contain:
       - rror
   stderr:
