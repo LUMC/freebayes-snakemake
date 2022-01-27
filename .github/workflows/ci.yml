@@ -52,14 +52,14 @@ jobs:
         # Increase this value to manually invalidate the cache
         CACHE_NUMBER: 0
       with:
-        path: /usr/share/miniconda/envs/snakemake-project
+        path: /usr/share/miniconda/envs/freebayes-snakemake
         key:
-          ${{ runner.os}}-snakemake-project-${{ env.CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
+          ${{ runner.os}}-freebayes-snakemake-${{ env.CACHE_NUMBER }}-${{ hashFiles('environment.yml') }}
 
     - uses: conda-incubator/setup-miniconda@v2.0.1
       # https://github.com/conda-incubator/setup-miniconda.
       with:
-        activate-environment: snakemake-project
+        activate-environment: freebayes-snakemake
         environment-file: environment.yml
         auto-activate-base: false
 
