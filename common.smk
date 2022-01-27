@@ -3,6 +3,7 @@ containers = {
     "bwa-mem2": "docker://quay.io/biocontainers/mulled-v2-e5d375990341c5aef3c9aff74f96f66f65375ef6:e6f0d20c9d78572ddbbf00d8767ee6ff865edd4e-0",
     "cutadapt": "docker://quay.io/biocontainers/cutadapt:3.5--py36hc5360cc_0",
     "debian": "docker://debian:latest",
+    "sambamba": "docker://quay.io/biocontainers/sambamba:0.8.1--hadffe2f_1",
 }
 default = {"setting1": "common.smk", "setting2": "common.smk", "setting3": "common.smk"}
 
@@ -47,3 +48,13 @@ def rg_per_sample():
         else:
             for i in range(len(fastq)):
                 yield sname, f"rg{i+1}"
+
+
+def get_bamfiles(wildcards):
+    """Return the bam files for a single sample"""
+    sname = wildcards.sample
+    fastq = pep.sample_table.loc[sname, "forward"]
+    if isinstance(fastq, str):
+        return f"{sname}/rg1.sorted.bam"
+    else:
+        return [f"{sname}/rg{i+1}.sorted.bam" for i in range(len(fastq))]

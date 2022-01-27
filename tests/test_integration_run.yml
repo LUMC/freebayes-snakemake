@@ -14,15 +14,14 @@
     must_not_contain:
       - rror
   files:
-    - path: outputfile.txt
-      contains:
-        - Hello world!
     - path: sample1.txt
     - path: sample2.txt
     - path: sample1/rg1_R1.fastq.gz
     - path: sample1/rg1_R2.fastq.gz
     - path: sample1/rg1.sorted.bam
     - path: sample1/rg1.sorted.bam.bai
+    - path: sample1/sample1.bam
+    - path: sample1/sample1.bam.bai
 
 - name: integration-subsamples
   tags:
@@ -47,7 +46,9 @@
     # Test for two readgroups for sample1
     - path: sample1/rg1.sorted.bam
     - path: sample1/rg2.sorted.bam
+    - path: sample1/sample1.bam
     # Test for a single readgroup for sample2
     - path: sample2/rg1.sorted.bam
     - path: sample2/rg2.sorted.bam
       should_exist: false
+    - path: sample2/sample2.bam

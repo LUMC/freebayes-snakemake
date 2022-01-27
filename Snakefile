@@ -20,7 +20,7 @@ rule all:
         outfile=get_outfile(),
         samples=expand("{sample}.txt", sample=pep.sample_table["sample_name"]),
         trimmed=[f"{sample}/{rg}_R1.fastq.gz" for sample, rg in rg_per_sample()],
-        bams=[f"{sample}/{rg}.sorted.bam" for sample, rg in rg_per_sample()],
+        bams=expand("{sample}/{sample}.bam", sample=pep.sample_table["sample_name"]),
         settings="settings.txt",
 
 
@@ -73,6 +73,28 @@ rule align:
             samtools sort -l {params.compression_level} \
             - -o {output.bam} 2> {log.sam};
             samtools index {output}
+        """
+
+
+rule markdup:
+    input:
+        bam=get_bamfiles,
+    output:
+        bam="{sample}/{sample}.bam",
+        bai="{sample}/{sample}.bam.bai",
+    params:
+        compression_level=1,
+    log:
+        "log/{sample}_markdup.txt",
+    container:
+        containers["sambamba"]
+    threads: 4
+    shell:
+        """
+        sambamba markdup \
+            --nthreads={threads} \
+            --compression-level={params.compression_level} \
+            {input.bam} {output.bam} 2> {log}
         """
 
 
