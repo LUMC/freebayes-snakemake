@@ -5,7 +5,7 @@
     snakemake
       --reason
       --printshellcmds
-      --jobs 1
+      --cores 12
       --latency-wait 120
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
       --config pepfile=tests/pep/project_config.yaml
@@ -31,6 +31,9 @@
     - path: sample1/sample1.phased.vcf.gz.tbi
     # Test if the phased bam file is generated for sample1
     - path: sample1/sample1.phased.bam
+    - path: log/sample2_rg1.align.bwa.log
+      contains_regex:
+        - 'Threads used .* 8'
 
 - name: integration-subsamples
   tags:
@@ -59,3 +62,7 @@
     - path: sample2/rg2.sorted.bam
       should_exist: false
     - path: sample2/sample2.phased.bam
+    # Test that only a single thread is used for bwa-mem2
+    - path: log/sample2_rg1.align.bwa.log
+      contains_regex:
+        - 'Threads used .* 1'

@@ -67,15 +67,27 @@ rule align:
         sam="log/{sample}_{readgroup}.align.samtools.log",
     container:
         containers["bwa-mem2"]
-    threads: 8
+    threads: 11
     shell:
         """
+        # WARNING: This works fine for 1 thread (testing) and 11 threads, but
+        # will under- or overprovision the tasks when other values are chosen
+
+        # Use at most 8 threads for bwa-mem2
+        bwa_cores=$(({threads} >= 8 ? 8 : 1))
+
+        # Use at most 3 threads for samtools sort, but only when {threads} is
+        # at least 8
+        sam_cores=$(({threads} >= 8 ? 3 : 1))
+
         bwa-mem2 mem \
             {input.reference} \
             -R '{params.rg}' \
-            -t {threads} \
+            -t $bwa_cores \
             {input.fin} {input.rin} 2> {log.bwa} |
-            samtools sort -l {params.compression_level} \
+            samtools sort \
+                -l {params.compression_level} \
+                -@ $sam_cores \
             - -o {output.bam} 2> {log.sam};
             samtools index {output}
         """

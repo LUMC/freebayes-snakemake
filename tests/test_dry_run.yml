@@ -6,7 +6,6 @@
       --dryrun
       --reason
       --printshellcmds
-      --cores 10
       --config pepfile=tests/pep/project_config.yaml
       --snakefile Snakefile
   stdout:
@@ -19,9 +18,6 @@
       - sample1/sample1.phased.vcf.gz.tbi
       # Test for phased bam file
       - sample1/sample1.phased.bam
-    contains_regex:
-      # Test if we pass threads to bwa-mem2
-      - 'bwa-mem2 mem .* -t 8'
 
 - name: dry-run-subsamples
   tags:
