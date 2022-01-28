@@ -67,11 +67,13 @@ rule align:
         sam="log/{sample}_{readgroup}.align.samtools.log",
     container:
         containers["bwa-mem2"]
+    threads: 8
     shell:
         """
         bwa-mem2 mem \
             {input.reference} \
             -R '{params.rg}' \
+            -t {threads} \
             {input.fin} {input.rin} 2> {log.bwa} |
             samtools sort -l {params.compression_level} \
             - -o {output.bam} 2> {log.sam};
