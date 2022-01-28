@@ -10,18 +10,17 @@
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
       --config pepfile=tests/pep/project_config.yaml
       --snakefile Snakefile
-  stderr:
-    must_not_contain:
-      - rror
   files:
-    - path: sample1.txt
-    - path: sample2.txt
+    # Test if the trimmed fastq files are generated for sample1
     - path: sample1/rg1_R1.fastq.gz
     - path: sample1/rg1_R2.fastq.gz
+    # Test if the bam file is generated for sample1
     - path: sample1/rg1.sorted.bam
     - path: sample1/rg1.sorted.bam.bai
+    # Test if the markdup bamfile is generated for sample1
     - path: sample1/sample1.bam
     - path: sample1/sample1.bam.bai
+    # Test if the indexed vcf file is generated for sample1
     - path: sample1/sample1.vcf.gz
     - path: sample1/sample1.vcf.gz.tbi
 
@@ -37,10 +36,8 @@
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
       --config pepfile=tests/pep/project_subsamples.yaml
       --snakefile Snakefile
-  stderr:
-    must_not_contain:
-      - rror
   files:
+    # Test if trimmed fastq files are generated for both read groups
     - path: sample1/rg1_R1.fastq.gz
     - path: sample1/rg1_R2.fastq.gz
     - path: sample1/rg2_R1.fastq.gz

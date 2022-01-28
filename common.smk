@@ -6,11 +6,9 @@ containers = {
     "freebayes": "docker://quay.io/biocontainers/freebayes:1.3.5--py36h74fc37f_4",
     "sambamba": "docker://quay.io/biocontainers/sambamba:0.8.1--hadffe2f_1",
 }
-default = {"setting1": "common.smk", "setting2": "common.smk", "setting3": "common.smk"}
 
-
-def get_outfile():
-    return "outputfile.txt"
+# Default settings for the pipeline
+default = dict()
 
 
 def get_forward(wildcards):
@@ -35,20 +33,6 @@ def get_fastq(wildcards, direction):
     # Here, we use the readgroup wildcard to pick the correct fastq file
     readgroups = {f"rg{rg+1}": fastq for rg, fastq in zip(range(len(fastq)), fastq)}
     return readgroups[wildcards.readgroup]
-
-
-def rg_per_sample():
-    """Yield (sample, readgroup) for every sample"""
-    for sample in pep.samples:
-        sname = sample["sample_name"]
-        fastq = pep.sample_table.loc[sname, "forward"]
-        # If there is only a single fastq file
-        if isinstance(fastq, str):
-            yield sname, "rg1"
-        # If there are multiple fastq files
-        else:
-            for i in range(len(fastq)):
-                yield sname, f"rg{i+1}"
 
 
 def get_bamfiles(wildcards):
