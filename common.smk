@@ -1,6 +1,6 @@
 containers = {
-    # bwa-mem2 2.1, samtools 1.11
-    "bwa-mem2": "docker://quay.io/biocontainers/mulled-v2-e5d375990341c5aef3c9aff74f96f66f65375ef6:e6f0d20c9d78572ddbbf00d8767ee6ff865edd4e-0",
+    # bwa-mem2 2.2.1, samtools 1.14
+    "bwa-mem2": "docker://quay.io/biocontainers/mulled-v2-e5d375990341c5aef3c9aff74f96f66f65375ef6:bc6f1a049835e70d6fac927e979a8ad9819e1b56-0",
     "cutadapt": "docker://quay.io/biocontainers/cutadapt:3.5--py36hc5360cc_0",
     "debian": "docker://debian:latest",
     "freebayes": "docker://quay.io/biocontainers/freebayes:1.3.5--py36h74fc37f_4",
