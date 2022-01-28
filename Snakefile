@@ -105,6 +105,7 @@ rule call_variants:
         reference=config["reference"],
     output:
         vcf="{sample}/{sample}.vcf.gz",
+        tbi="{sample}/{sample}.vcf.gz.tbi",
     log:
         "log/{sample}_call_variants.txt",
     container:
@@ -114,6 +115,7 @@ rule call_variants:
         freebayes \
             --fasta-reference {input.reference} \
             --bam {input.bam} | bgzip > {output.vcf} 2> {log}
+        tabix -p vcf {output.vcf}
         """
 
 

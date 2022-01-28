@@ -21,6 +21,7 @@
       - sample1/sample1.bam
       - sample1/sample1.bam.bai
       - sample1/sample1.vcf.gz
+      - sample1/sample1.vcf.gz.tbi
     must_not_contain:
       - rror
   stderr:
@@ -54,6 +55,7 @@
       # Test for the bamfile for sample2
       - sample2/sample2.bam
       - sample2/sample2.vcf.gz
+      - sample2/sample2.vcf.gz.tbi
     contains_regex:
       # Test if two bam files are passed to sample1
       - 'sambamba markdup .* sample1/rg1.sorted.bam sample1/rg2.sorted.bam'

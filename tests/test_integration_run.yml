@@ -23,6 +23,7 @@
     - path: sample1/sample1.bam
     - path: sample1/sample1.bam.bai
     - path: sample1/sample1.vcf.gz
+    - path: sample1/sample1.vcf.gz.tbi
 
 - name: integration-subsamples
   tags:
