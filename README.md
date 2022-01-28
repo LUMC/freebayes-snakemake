@@ -39,3 +39,15 @@ If you have multiple read pairs per sample, you can also specify a [subsample
 table](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/subsamples.csv),
 with one line for each read pair
 ([example](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/subsamples.csv)).
+
+## Run the pipeline
+Use the following commands to activate the conda environment for the pipeline,
+and run the example project configuration. This will create two output
+folders, `sample1` and `sample2`, as well as a `log` folder that contains
+the log files from the pipeline.
+
+```bash
+conda activate freebayes-snakemake
+
+snakemake --cores 1 --use-singularity --config pepfile=tests/pep/project_config.yaml
+```
