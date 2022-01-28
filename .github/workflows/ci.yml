@@ -18,17 +18,9 @@ jobs:
     strategy:
       matrix:
         test:
-          - sanity-snakemake
-          - sanity-singularity
-          - sanity-snakemake-lint
-          - sanity-snakefmt
-          - dry-run-vanilla
-          - dry-run-subsamples
-          - dry-run-settings-command-line
-          - dry-run-settings-configfile
-          - dry-run-settings-pepfile
-          - integration-vanilla
-          - integration-subsamples
+          - sanity
+          - dry-run
+          - integration
     steps:
     - uses: actions/checkout@v2
 
