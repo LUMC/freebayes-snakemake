@@ -38,4 +38,4 @@ table](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/samples.c
 If you have multiple read pairs per sample, you can also specify a [subsample
 table](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/subsamples.csv),
 with one line for each read pair
-([example](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/subsamples.csv).
+([example](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/subsamples.csv)).
