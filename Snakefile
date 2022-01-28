@@ -21,7 +21,7 @@ rule all:
         samples=expand("{sample}.txt", sample=pep.sample_table["sample_name"]),
         trimmed=[f"{sample}/{rg}_R1.fastq.gz" for sample, rg in rg_per_sample()],
         bams=expand("{sample}/{sample}.bam", sample=pep.sample_table["sample_name"]),
-        vcf=expand("{sample}/{sample}.vcf", sample=pep.sample_table["sample_name"]),
+        vcf=expand("{sample}/{sample}.vcf.gz", sample=pep.sample_table["sample_name"]),
         settings="settings.txt",
 
 
@@ -104,7 +104,7 @@ rule call_variants:
         bam=rules.markdup.output.bam,
         reference=config["reference"],
     output:
-        vcf="{sample}/{sample}.vcf",
+        vcf="{sample}/{sample}.vcf.gz",
     log:
         "log/{sample}_call_variants.txt",
     container:
@@ -113,7 +113,7 @@ rule call_variants:
         """
         freebayes \
             --fasta-reference {input.reference} \
-            --bam {input.bam} > {output.vcf} 2> {log}
+            --bam {input.bam} | bgzip > {output.vcf} 2> {log}
         """
 
 
