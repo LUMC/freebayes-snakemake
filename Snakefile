@@ -17,7 +17,9 @@ config = default
 
 rule all:
     input:
-        vcf=expand("{sample}/{sample}.vcf.gz", sample=pep.sample_table["sample_name"]),
+        vcf=expand(
+            "{sample}/{sample}.phased.vcf.gz", sample=pep.sample_table["sample_name"]
+        ),
 
 
 rule cutadapt:
@@ -109,6 +111,28 @@ rule call_variants:
         """
         freebayes \
             --fasta-reference {input.reference} \
-            --bam {input.bam} | bgzip > {output.vcf} 2> {log}
+            --bam {input.bam} 2> {log} | bgzip > {output.vcf}
+        tabix -p vcf {output.vcf}
+        """
+
+
+rule phase_variants:
+    input:
+        bam=rules.markdup.output.bam,
+        reference=config["reference"],
+        vcf=rules.call_variants.output.vcf,
+    output:
+        vcf="{sample}/{sample}.phased.vcf.gz",
+        tbi="{sample}/{sample}.phased.vcf.gz.tbi",
+    log:
+        "log/{sample}_phase_variants.txt",
+    container:
+        containers["whatshap"]
+    shell:
+        """
+        whatshap phase \
+            --reference {input.reference} \
+            {input.vcf} \
+            {input.bam} 2> {log} | bgzip > {output.vcf}
         tabix -p vcf {output.vcf}
         """

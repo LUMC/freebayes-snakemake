@@ -12,8 +12,8 @@
     contains:
       - sample1/sample1.bam
       - sample1/sample1.bam.bai
-      - sample1/sample1.vcf.gz
-      - sample1/sample1.vcf.gz.tbi
+      - sample1/sample1.phased.vcf.gz
+      - sample1/sample1.phased.vcf.gz.tbi
 
 - name: dry-run-subsamples
   tags:
