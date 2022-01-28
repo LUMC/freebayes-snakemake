@@ -20,7 +20,7 @@ conda env create --file environment.yml
 conda activate freebayes-snakemake
 ```
 
-## Settings
+## Settings priority
 There are three levels where configuration options are set, in decreasing order
 of priority.
 1. Flags passed to snakemake using `--config`, or in the specified
@@ -28,3 +28,14 @@ of priority.
 2. Setting specified in the PEP project configuration, under the key
    `freebayes-snakemake`
 3. The default settings for the pipeline, as specified in the `common.smk` file
+
+## Pipeline settings
+The pipeline only requires a single PEP configuration file, which specifies a
+csv [sample
+table](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/samples.csv) and a reference
+([example](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/project_config.yaml)).
+
+If you have multiple read pairs per sample, you can also specify a [subsample
+table](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/subsamples.csv),
+with one line for each read pair
+([example](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/subsamples.csv).
