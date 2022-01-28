@@ -22,7 +22,15 @@
     - path: sample1/sample1.bam.bai
     # Test if the phased vcf file is generated for sample1
     - path: sample1/sample1.phased.vcf.gz
+      # Test that the sample name is not set to "unknown"
+      must_not_contain:
+        - "FORMAT\tunknown"
+      # Test if the sample name is set to the name specified by the user
+      contains:
+        - "FORMAT\tsample1"
     - path: sample1/sample1.phased.vcf.gz.tbi
+    # Test if the phased bam file is generated for sample1
+    - path: sample1/sample1.phased.bam
 
 - name: integration-subsamples
   tags:
@@ -45,9 +53,9 @@
     # Test for two readgroups for sample1
     - path: sample1/rg1.sorted.bam
     - path: sample1/rg2.sorted.bam
-    - path: sample1/sample1.bam
+    - path: sample1/sample1.phased.bam
     # Test for a single readgroup for sample2
     - path: sample2/rg1.sorted.bam
     - path: sample2/rg2.sorted.bam
       should_exist: false
-    - path: sample2/sample2.bam
+    - path: sample2/sample2.phased.bam

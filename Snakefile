@@ -20,6 +20,9 @@ rule all:
         vcf=expand(
             "{sample}/{sample}.phased.vcf.gz", sample=pep.sample_table["sample_name"]
         ),
+        bam=expand(
+            "{sample}/{sample}.phased.bam", sample=pep.sample_table["sample_name"]
+        ),
 
 
 rule cutadapt:
@@ -58,6 +61,7 @@ rule align:
         bai="{sample}/{readgroup}.sorted.bam.bai",
     params:
         compression_level=1,
+        rg="@RG\\tID:{sample}-{readgroup}\\tSM:{sample}",
     log:
         bwa="log/{sample}_{readgroup}.align.bwa.log",
         sam="log/{sample}_{readgroup}.align.samtools.log",
@@ -67,6 +71,7 @@ rule align:
         """
         bwa-mem2 mem \
             {input.reference} \
+            -R '{params.rg}' \
             {input.fin} {input.rin} 2> {log.bwa} |
             samtools sort -l {params.compression_level} \
             - -o {output.bam} 2> {log.sam};
@@ -135,4 +140,25 @@ rule phase_variants:
             {input.vcf} \
             {input.bam} 2> {log} | bgzip > {output.vcf}
         tabix -p vcf {output.vcf}
+        """
+
+
+rule phase_reads:
+    input:
+        bam=rules.markdup.output.bam,
+        reference=config["reference"],
+        vcf=rules.phase_variants.output.vcf,
+    output:
+        bam="{sample}/{sample}.phased.bam",
+    log:
+        "log/{sample}_phase_reads.txt",
+    container:
+        containers["whatshap"]
+    shell:
+        """
+        whatshap haplotag \
+            --reference {input.reference} \
+            --output {output.bam} \
+            {input.vcf} \
+            {input.bam} 2> {log}
         """

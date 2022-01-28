@@ -10,10 +10,14 @@
       --snakefile Snakefile
   stdout:
     contains:
+      # Test for markdup bam output file
       - sample1/sample1.bam
       - sample1/sample1.bam.bai
+      # Test for phased vcf file
       - sample1/sample1.phased.vcf.gz
       - sample1/sample1.phased.vcf.gz.tbi
+      # Test for phased bam file
+      - sample1/sample1.phased.bam
 
 - name: dry-run-subsamples
   tags:
@@ -37,9 +41,11 @@
       - sample2/rg1_R2.fastq.gz
       # Test for the bamfile for sample2
       - sample2/sample2.bam
-      # Test for the indexed vcf file for sample2
-      - sample2/sample2.vcf.gz
-      - sample2/sample2.vcf.gz.tbi
+      # Test for the phased vcf file for sample2
+      - sample2/sample2.phased.vcf.gz
+      - sample2/sample2.phased.vcf.gz.tbi
+      # Test for phased bamfile for sample2
+      - sample2/sample2.phased.bam
     contains_regex:
       # Test if two bam files are passed to sambamba markdup for sample1
       - 'sambamba markdup .* sample1/rg1.sorted.bam sample1/rg2.sorted.bam'
