@@ -23,6 +23,9 @@ rule all:
         bam=expand(
             "{sample}/{sample}.phased.bam", sample=pep.sample_table["sample_name"]
         ),
+        stats=expand(
+            "{sample}/{sample}.phased.tsv", sample=pep.sample_table["sample_name"]
+        ),
 
 
 rule cutadapt:
@@ -175,4 +178,25 @@ rule phase_reads:
             --output {output.bam} \
             {input.vcf} \
             {input.bam} 2> {log}
+        """
+
+
+rule phase_stats:
+    input:
+        vcf=rules.phase_variants.output.vcf,
+    output:
+        block="{sample}/{sample}.phased.blocklist",
+        gtf="{sample}/{sample}.phased.gtf",
+        tsv="{sample}/{sample}.phased.tsv",
+    log:
+        "log/{sample}_phase_stats.txt",
+    container:
+        containers["whatshap"]
+    shell:
+        """
+        whatshap stats \
+            --block-list {output.block} \
+            --gtf {output.gtf} \
+            --tsv {output.tsv} \
+            {input.vcf}  2> {log}
         """

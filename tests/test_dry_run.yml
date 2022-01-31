@@ -18,6 +18,8 @@
       - sample1/sample1.phased.vcf.gz.tbi
       # Test for phased bam file
       - sample1/sample1.phased.bam
+      # Test for the whatshap stats file
+      - sample1/sample1.phased.tsv
 
 - name: dry-run-subsamples
   tags:

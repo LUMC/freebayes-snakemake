@@ -34,6 +34,10 @@
     - path: log/sample2_rg1.align.bwa.log
       contains_regex:
         - 'Threads used .* 8'
+    # Test if the whatshap stat files are generated
+    - path: sample1/sample1.phased.blocklist
+    - path: sample1/sample1.phased.gtf
+    - path: sample1/sample1.phased.tsv
 
 - name: integration-subsamples
   tags:
