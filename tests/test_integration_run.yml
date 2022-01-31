@@ -38,6 +38,15 @@
     - path: sample1/sample1.phased.blocklist
     - path: sample1/sample1.phased.gtf
     - path: sample1/sample1.phased.tsv
+    # Test for the multiqc
+    - path: multiqc_report.html
+      contains:
+        - "sample1"
+      must_not_contain:
+        # Make sure the samples are properly renamed
+        - "sample1_markdup"
+        # Don't run the MultiQC on the cutadapt logs
+        - "Cutadapt"
 
 - name: integration-subsamples
   tags:

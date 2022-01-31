@@ -20,6 +20,8 @@
       - sample1/sample1.phased.bam
       # Test for the whatshap stats file
       - sample1/sample1.phased.tsv
+      # Test for the multiqc output file
+      - multiqc_report.html
 
 - name: dry-run-subsamples
   tags:

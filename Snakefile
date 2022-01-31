@@ -26,6 +26,7 @@ rule all:
         stats=expand(
             "{sample}/{sample}.phased.tsv", sample=pep.sample_table["sample_name"]
         ),
+        multiqc="multiqc_report.html",
 
 
 rule cutadapt:
@@ -199,4 +200,30 @@ rule phase_stats:
             --gtf {output.gtf} \
             --tsv {output.tsv} \
             {input.vcf}  2> {log}
+        """
+
+
+rule multiqc:
+    input:
+        markdup=expand(
+            "log/{sample}_markdup.txt",
+            sample=pep.sample_table["sample_name"],
+        ),
+        config=srcdir("config/multiqc_config.yml"),
+    output:
+        "multiqc_report.html",
+    log:
+        "log/multiqc.log",
+    container:
+        containers["multiqc"]
+    shell:
+        """
+        rm -f multiqc_file_list.txt
+        for file in {input.markdup}; do
+            echo $file >> multiqc_file_list.txt
+        done
+
+        multiqc \
+            --file-list multiqc_file_list.txt \
+            --config {input.config}
         """
