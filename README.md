@@ -51,3 +51,7 @@ conda activate freebayes-snakemake
 
 snakemake --cores 1 --use-singularity --config pepfile=tests/pep/project_config.yaml
 ```
+
+If you want to preserve the intermediate files of the pipeline, you can run
+Snakemake with the `--notemp` flag. Otherwise, all intermediate files will be
+removed when they are no longer needed.

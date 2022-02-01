@@ -8,6 +8,7 @@
       --cores 12
       --latency-wait 120
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
+      --notemp
       --config pepfile=tests/pep/project_config.yaml
       --snakefile Snakefile
   files:
@@ -58,6 +59,7 @@
       --jobs 1
       --latency-wait 120
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
+      --notemp
       --config pepfile=tests/pep/project_subsamples.yaml
       --snakefile Snakefile
   files:
@@ -79,3 +81,38 @@
     - path: log/sample2_rg1.align.bwa.log
       contains_regex:
         - 'Threads used .* 1'
+
+# Test to make sure that intermediate files are removed
+- name: integration-test-temp
+  tags:
+    - integration
+  command: >
+    snakemake
+      --reason
+      --printshellcmds
+      --jobs 1
+      --latency-wait 120
+      --use-singularity --singularity-args ' --cleanenv --bind /tmp'
+      --config pepfile=tests/pep/project_config.yaml
+      --snakefile Snakefile
+  files:
+    # Output of cutadapt
+    - path: sample1/rg1_R1.fastq.gz
+      should_exist: false
+    - path: sample1/rg1_R2.fastq.gz
+      should_exist: false
+    # Output of bwa-mem2
+    - path: sample1/rg1.sorted.bam
+      should_exist: false
+    - path: sample1/rg1.sorted.bam.bai
+      should_exist: false
+    # Output of markdup
+    - path: sample1/sample1.bam
+      should_exist: false
+    - path: sample1/sample1.bam.bai
+      should_exist: false
+    # Output of freebayes
+    - path: sample1/sample1.vcf.gz
+      should_exist: false
+    - path: sample1/sample1.vcf.gz.tbi
+      should_exist: false

@@ -34,8 +34,8 @@ rule cutadapt:
         fin=get_forward,
         rin=get_reverse,
     output:
-        fout="{sample}/{readgroup}_R1.fastq.gz",
-        rout="{sample}/{readgroup}_R2.fastq.gz",
+        fout=temp("{sample}/{readgroup}_R1.fastq.gz"),
+        rout=temp("{sample}/{readgroup}_R2.fastq.gz"),
     log:
         "log/{sample}_{readgroup}_cutadapt.txt",
     container:
@@ -61,8 +61,8 @@ rule align:
         rin=rules.cutadapt.output.rout,
         reference=config["reference"],
     output:
-        bam="{sample}/{readgroup}.sorted.bam",
-        bai="{sample}/{readgroup}.sorted.bam.bai",
+        bam=temp("{sample}/{readgroup}.sorted.bam"),
+        bai=temp("{sample}/{readgroup}.sorted.bam.bai"),
     params:
         compression_level=1,
         rg="@RG\\tID:{sample}-{readgroup}\\tSM:{sample}",
@@ -100,9 +100,10 @@ rule align:
 rule markdup:
     input:
         bam=get_bamfiles,
+        bai=get_baifiles,
     output:
-        bam="{sample}/{sample}.bam",
-        bai="{sample}/{sample}.bam.bai",
+        bam=temp("{sample}/{sample}.bam"),
+        bai=temp("{sample}/{sample}.bam.bai"),
     params:
         compression_level=1,
     log:
@@ -122,10 +123,11 @@ rule markdup:
 rule call_variants:
     input:
         bam=rules.markdup.output.bam,
+        bai=rules.markdup.output.bai,
         reference=config["reference"],
     output:
-        vcf="{sample}/{sample}.vcf.gz",
-        tbi="{sample}/{sample}.vcf.gz.tbi",
+        vcf=temp("{sample}/{sample}.vcf.gz"),
+        tbi=temp("{sample}/{sample}.vcf.gz.tbi"),
     log:
         "log/{sample}_call_variants.txt",
     container:
@@ -144,6 +146,7 @@ rule phase_variants:
         bam=rules.markdup.output.bam,
         reference=config["reference"],
         vcf=rules.call_variants.output.vcf,
+        tbi=rules.call_variants.output.tbi,
     output:
         vcf="{sample}/{sample}.phased.vcf.gz",
         tbi="{sample}/{sample}.phased.vcf.gz.tbi",
@@ -164,6 +167,7 @@ rule phase_variants:
 rule phase_reads:
     input:
         bam=rules.markdup.output.bam,
+        bai=rules.markdup.output.bai,
         reference=config["reference"],
         vcf=rules.phase_variants.output.vcf,
     output:

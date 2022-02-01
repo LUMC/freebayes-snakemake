@@ -45,3 +45,11 @@ def get_bamfiles(wildcards):
         return f"{sname}/rg1.sorted.bam"
     else:
         return [f"{sname}/rg{i+1}.sorted.bam" for i in range(len(fastq))]
+
+def get_baifiles(wildcards):
+    """Return the bai files for a single sample"""
+    bamfiles = get_bamfiles(wildcards)
+    if isinstance(bamfiles, str):
+        return f"{bamfiles}.bai"
+    else:
+        return [f"{bam}.bai" for bam in get_bamfiles(wildcards)]

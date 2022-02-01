@@ -10,6 +10,7 @@ that users understand how the changes affect the new version.
 
 v1.0.1
 ---------------------------
++ Mark intermediate files as temporary
 + Add MultiQC report for sambamba markdup
 + Add `whatshap stats` to the pipeline
 + Run samtools sort with up to 3 threads
