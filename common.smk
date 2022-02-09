@@ -65,3 +65,8 @@ def get_hs_metrics(wildcards):
         return [
             f"{sample}/hs_metrics.txt" for sample in pep.sample_table["sample_name"]
         ]
+
+
+def get_dict_file(wildcards):
+    """Return the dict file for the reference"""
+    return os.path.splitext(config["reference"])[0] + ".dict"

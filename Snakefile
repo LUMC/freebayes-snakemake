@@ -126,7 +126,7 @@ rule collect_hs_metrics:
         bai=rules.markdup.output.bai,
         bed=config.get("capture_bed", ""),
         reference=config["reference"],
-        dictionary=config["reference"].split(".")[0] + ".dict",
+        dictionary=get_dict_file,
     output:
         metrics="{sample}/hs_metrics.txt",
     log:

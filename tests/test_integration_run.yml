@@ -119,7 +119,7 @@
 
 - name: integration-capture
   tags:
-    - dry-run
+    - integration
   command: >
     snakemake
       --reason
