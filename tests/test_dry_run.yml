@@ -22,6 +22,9 @@
       - sample1/sample1.phased.tsv
       # Test for the multiqc output file
       - multiqc_report.html
+    must_not_contain:
+      # hs_metrics should only run when a capture_bed file has been specified
+      - rule collect_hs_metrics
 
 - name: dry-run-subsamples
   tags:
@@ -53,3 +56,18 @@
     contains_regex:
       # Test if two bam files are passed to sambamba markdup for sample1
       - 'sambamba markdup .* sample1/rg1.sorted.bam sample1/rg2.sorted.bam'
+
+- name: dry-run-capture
+  tags:
+    - dry-run
+  command: >
+    snakemake
+      --dryrun
+      --reason
+      --printshellcmds
+      --config pepfile=tests/pep/project_capture.yaml
+      --snakefile Snakefile
+  stdout:
+    contains:
+      # Test if we generate capture metrics
+      - rule collect_hs_metrics

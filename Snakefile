@@ -120,6 +120,35 @@ rule markdup:
         """
 
 
+rule collect_hs_metrics:
+    input:
+        bam=rules.markdup.output.bam,
+        bai=rules.markdup.output.bai,
+        bed=config.get("capture_bed", ""),
+        reference=config["reference"],
+        dictionary=config["reference"].split(".")[0] + ".dict",
+    output:
+        metrics="{sample}/hs_metrics.txt",
+    log:
+        "log/{sample}_hs_metrics.txt",
+    container:
+        containers["picard"]
+    shell:
+        """
+        picard BedToIntervalList \
+            INPUT={input.bed} \
+            SEQUENCE_DICTIONARY={input.dictionary} \
+            OUTPUT=capture.list
+
+        picard CollectHsMetrics \
+            I={input.bam} \
+            R={input.reference} \
+            BAIT_INTERVALS=capture.list \
+            TARGET_INTERVALS=capture.list \
+            O={output.metrics}
+        """
+
+
 rule call_variants:
     input:
         bam=rules.markdup.output.bam,
@@ -213,6 +242,7 @@ rule multiqc:
             "log/{sample}_markdup.txt",
             sample=pep.sample_table["sample_name"],
         ),
+        hs_metrics=get_hs_metrics,
         config=srcdir("config/multiqc_config.yml"),
     output:
         "multiqc_report.html",
@@ -223,7 +253,7 @@ rule multiqc:
     shell:
         """
         rm -f multiqc_file_list.txt
-        for file in {input.markdup}; do
+        for file in {input.markdup} {input.hs_metrics}; do
             echo $file >> multiqc_file_list.txt
         done
 
