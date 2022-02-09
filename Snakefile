@@ -228,6 +228,7 @@ rule multiqc:
         done
 
         multiqc \
+            --force \
             --file-list multiqc_file_list.txt \
             --config {input.config}
         """
