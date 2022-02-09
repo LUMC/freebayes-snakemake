@@ -5,7 +5,7 @@ containers = {
     "debian": "docker://debian:latest",
     "freebayes": "docker://quay.io/biocontainers/freebayes:1.3.5--py36h74fc37f_4",
     "multiqc": "docker://quay.io/biocontainers/multiqc:1.11--pyhdfd78af_0",
-    "picard": "docker://quay.io/biocontainers/picard:2.26.10--hdfd78af_0",
+    "picard": "docker://quay.io/biocontainers/picard:2.23.8--0",
     "sambamba": "docker://quay.io/biocontainers/sambamba:0.8.1--hadffe2f_1",
     "whatshap": "docker://quay.io/biocontainers/whatshap:1.2.1--py38h8c62d01_0",
 }
