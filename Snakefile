@@ -186,6 +186,7 @@ rule phase_variants:
     shell:
         """
         whatshap phase \
+            --indels \
             --reference {input.reference} \
             {input.vcf} \
             {input.bam} 2> {log} | bgzip > {output.vcf}
