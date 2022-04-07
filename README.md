@@ -30,7 +30,7 @@ of priority.
 3. The default settings for the pipeline, as specified in the `common.smk` file
 
 ## Pipeline settings
-The pipeline only requires a single PEP configuration file, which specifies a
+The pipeline requires a single PEP configuration file, which specifies a
 csv [sample
 table](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/samples.csv) and a reference
 ([example](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/project_config.yaml)).
@@ -39,6 +39,13 @@ If you have multiple read pairs per sample, you can also specify a [subsample
 table](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/subsamples.csv),
 with one line for each read pair
 ([example](https://github.com/LUMC/freebayes-snakemake/blob/main/tests/pep/project_subsamples.yaml)).
+
+### Available settings
+|Option | Type | Explanation|
+|--- | --- | ---|
+|reference | Required file | Indexed reference file to use with mapping and variant calling|
+|capture_bed | Optional file | Add a section for `picard CollectHsMetrics` to the MultiQC report by specifying a capture bed file|
+
 
 ## Run the pipeline
 Use the following commands to activate the conda environment for the pipeline,
