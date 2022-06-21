@@ -34,8 +34,8 @@ rule cutadapt:
         fin=get_forward,
         rin=get_reverse,
     output:
-        fout=temp("{sample}/{readgroup}_R1.fastq.gz"),
-        rout=temp("{sample}/{readgroup}_R2.fastq.gz"),
+        fout=temp("{sample}/{readgroup, rg\d+}_R1.fastq.gz"),
+        rout=temp("{sample}/{readgroup, rg\d+}_R2.fastq.gz"),
     log:
         "log/{sample}_{readgroup}_cutadapt.txt",
     container:
