@@ -26,8 +26,9 @@ of priority.
 1. Flags passed to snakemake using `--config`, or in the specified
    `--configfile`.
 2. Setting specified in the PEP project configuration, under the key
-   `freebayes-snakemake`
-3. The default settings for the pipeline, as specified in the `common.smk` file
+   `freebayes-snakemake`.
+3. The default settings for the pipeline, as specified in the `common.smk`
+   file.
 
 ## Pipeline settings
 The pipeline requires a single PEP configuration file, which specifies a
